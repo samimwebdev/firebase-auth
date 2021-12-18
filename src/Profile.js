@@ -1,8 +1,9 @@
-import React from 'react'
-import { AuthContext } from './context/Auth.context'
+import React from "react";
+import { AuthContext } from "./context/Auth.context";
+import ImageUpload from "./ImageUpload";
 
 export const Profile = () => {
-  const currentUser = React.useContext(AuthContext)
-  console.log(currentUser)
-  return <pre>{JSON.stringify(currentUser, null, 2)}</pre>
-}
+  const currentUser = React.useContext(AuthContext);
+
+  return <ImageUpload />;
+};

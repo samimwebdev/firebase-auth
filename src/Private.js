@@ -1,3 +1,3 @@
 export const Private = () => {
-  return <p>Private</p>
-}
+  return <p>Private</p>;
+};

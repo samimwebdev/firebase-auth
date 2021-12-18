@@ -1,91 +1,96 @@
-import * as React from 'react'
-import Avatar from '@mui/material/Avatar'
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
 
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import { Link as Navigate, useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { useSnackbar } from 'notistack'
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { Link as Navigate, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useSnackbar } from "notistack";
 
-import { auth } from './utils/firebase.config'
+import { auth } from "./utils/firebase.config";
 
 export const Register = () => {
   const [userInfo, setUserInfo] = React.useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: ''
-  })
-  const { enqueueSnackbar } = useSnackbar()
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+  const { enqueueSnackbar } = useSnackbar();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setUserInfo({
       ...userInfo,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handleSubmit = async e => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const user = await createUserWithEmailAndPassword(
         auth,
         userInfo.email,
         userInfo.password
-      )
-      enqueueSnackbar('Registered Successfully, Please Login', {
-        variant: 'success',
-        autoHideDuration: 2000
-      })
-      navigate('/profile')
+      );
 
-      console.log(user)
+      updateProfile(auth.currentUser, {
+        displayName: userInfo.firstName + " " + userInfo.lastName,
+      });
+
+      enqueueSnackbar("Registered Successfully, Please Login", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+      navigate("/profile");
+
+      console.log(user);
     } catch (err) {
       enqueueSnackbar(err.message, {
-        variant: 'error',
-        autoHideDuration: 2000
-      })
+        variant: "error",
+        autoHideDuration: 2000,
+      });
     }
     //submitting to firebase
-  }
+  };
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component='h1' variant='h5'>
+        <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete='given-name'
-                name='firstName'
+                autoComplete="given-name"
+                name="firstName"
                 onChange={handleChange}
                 required
                 fullWidth
-                id='firstName'
-                label='First Name'
+                id="firstName"
+                label="First Name"
                 autoFocus
               />
             </Grid>
@@ -94,10 +99,10 @@ export const Register = () => {
                 required
                 fullWidth
                 onChange={handleChange}
-                id='lastName'
-                label='Last Name'
-                name='lastName'
-                autoComplete='family-name'
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
               />
             </Grid>
             <Grid item xs={12}>
@@ -105,10 +110,10 @@ export const Register = () => {
                 required
                 fullWidth
                 onChange={handleChange}
-                id='email'
-                label='Email Address'
-                name='email'
-                autoComplete='email'
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
               />
             </Grid>
             <Grid item xs={12}>
@@ -116,25 +121,25 @@ export const Register = () => {
                 required
                 onChange={handleChange}
                 fullWidth
-                name='password'
-                label='Password'
-                type='password'
-                id='password'
-                autoComplete='new-password'
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
               />
             </Grid>
           </Grid>
           <Button
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
+            variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
             Sign Up
           </Button>
-          <Grid container justifyContent='flex-end'>
+          <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link component={Navigate} to='/login' variant='body2'>
+              <Link component={Navigate} to="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
@@ -142,5 +147,5 @@ export const Register = () => {
         </Box>
       </Box>
     </Container>
-  )
-}
+  );
+};
